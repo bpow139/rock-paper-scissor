@@ -1,3 +1,4 @@
+
 function getComputerChoice() {
     // input: None
     // output: random selection of rock, paper, or scissor.
@@ -6,14 +7,25 @@ function getComputerChoice() {
     return choices[Math.floor(Math.random() * 3)];
 }
 
-function playRound() {
+function updateScore(winner, score) {
+    if (winner == 'player') {
+        score[0] = score[0] + 1;
+    }
+    else if (winner == 'computer') {
+        score[1] = score[1] + 1;
+    }
+    else {
 
-    let playerSelection = prompt("What are you throwing!!!");
+    }
+    return score;
+}
+
+function playRound(playerSelection) {
+
     let computerSelection = getComputerChoice();
 
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
-
 
     switch (playerSelection) {
 
@@ -21,19 +33,20 @@ function playRound() {
             switch (computerSelection) {
                 case "rock":
                     console.log("You both threw ROCK!, play another round!");
-                    playRound();
+                    winner = null;
                     break;
 
                 case "paper":
                     console.log("Ouch! You threw ROCK and they threw PAPER. Paper beats Rock so you are a loser.");
                     winner = "computer";
+
                     break;
 
                 case "scissor":
                     console.log("Ha! you threw ROCK and they threw SCISSOR. You crushed them! Winner winner chicken dinner.");
                     winner = "player";
-                    break;
 
+                    break;
             }
             break;
         case "paper":
@@ -45,7 +58,7 @@ function playRound() {
 
                 case "paper":
                     console.log("Woops looks like you both threw PAPER, maybe play another round?");
-                    playRound();
+                    winner = null;
                     break;
 
                 case "scissor":
@@ -69,55 +82,89 @@ function playRound() {
 
                 case "scissor":
                     console.log("Woopsy Daisy. Looks like you both threw SCISSOR. Maybe try playing another round?");
-                    playRound();
+                    winner = null;
                     break;
 
             }
             break;
         default:
             console.log("Something went wrong with your input. Try and focus!");
-            playRound();
+            break;
     }
 
     return winner;
 }
 
-function updatedScore(score) {
-    console.log("Player: " + score[0] + " vs. Computer:" + score[1]);
+function updateScoreboard(score) {
+
+    let playerScore = document.getElementById('player-score');
+    playerScore.textContent = score[0];
+
+    let computerScore = document.getElementById('computer-score');
+    computerScore.textContent = score[1];
 }
 
+function displayWinner(score) {
+    let body = document.querySelector('body');
+    let displayWinner = document.createElement('div');
 
-function playGame(numberOfGames = 1) {
-    let score = [0, 0];
-
-    for (let i = 0; i < numberOfGames; i++) {
-
-        winner = playRound();
-
-        if (winner === "player") {
-            score[0] = score[0] + 1;
-            updatedScore(score);
-        }
-        else {
-            score[1] = score[1] + 1;
-            updatedScore(score);
-        }
-
-    }
+    displayWinner.classList.add('display-winner');
 
     if (score[0] > score[1]) {
-        updatedScore(score);
-        console.log("Alright! you fucking won the match!");
+        displayWinner.textContent = 'Alright you fucking won!';
     }
-
     else if (score[0] < score[1]) {
-        updatedScore(score);
-        console.log("Damn, looks like you utterly failed. Better luck next time.");
+        displayWinner.textContent = 'Woof, looks like you lost this time.   :(';
+    }
+    else {
+        displayWinner.textContent = 'Seems like we have a tie.';
     }
 
-    else {
-        updatedScore(score);
-        console.log("It seems you have tied!");
+    body.appendChild(displayWinner);
+}
+
+function startGame() {
+    let numberOfRounds = document.getElementById('rounds').value;
+    let score = [0, 0];
+    updateScoreboard(score);
+
+    const rockListener = document.querySelector('.rock');
+    rockListener.addEventListener('click', (e) => {
+        score = updateScore(playRound(e.srcElement.alt), score);
+        console.log(score[0]);
+        updateScoreboard(score);
+        if (score[0] + score[1] >= numberOfRounds) {
+            displayWinner(score);
+        }
+
     }
+    );
+
+    const paperListener = document.querySelector('.paper');
+    paperListener.addEventListener('click', (e) => {
+        score = updateScore(playRound(e.srcElement.alt), score);
+        console.log(score);
+        updateScoreboard(score);
+        if (score[0] + score[1] >= numberOfRounds) {
+            displayWinner(score);
+        }
+
+    }
+    );
+
+    const scissorListener = document.querySelector('.scissor');
+    scissorListener.addEventListener('click', (e) => {
+        score = updateScore(playRound(e.srcElement.alt), score);
+        console.log(score);
+        updateScoreboard(score);
+        if (score[0] + score[1] >= numberOfRounds) {
+            displayWinner(score);
+        }
+
+    }
+    );
+
 
 }
+
+document.querySelector('button').addEventListener('click', startGame);
