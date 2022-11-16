@@ -2,6 +2,10 @@ body {
     background-color: rgb(178, 155, 228);
     min-height: 100vh;
     font-family: "Gill Sans", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -12,6 +16,7 @@ body {
     justify-content: center;
     width: 80%;
 
+
 }
 
 img {
@@ -21,10 +26,20 @@ img {
     margin-bottom: 3px;
 }
 
+.number-of-rounds {
+    border: 2px solid black;
+    padding: 10px;
+    margin: 15px;
+}
+
+
 .scoreboard {
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 300px;
+    padding: 25px;
+    margin: 30px;
+    align-items: center;
 
 }
 
@@ -32,6 +47,7 @@ img {
 .scoreboard__score {
     padding: 10px;
     text-align: center;
+    justify-content: center;
 }
 
 .scoreboard__name {
@@ -46,5 +62,8 @@ p {
 .display-winner {
     font-size: xx-large;
     font-weight: bold;
-    color: darkred;
+    color: rgb(240, 255, 202);
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
 }

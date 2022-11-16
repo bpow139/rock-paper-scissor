@@ -121,6 +121,7 @@ function displayWinner(score) {
     }
 
     body.appendChild(displayWinner);
+
 }
 
 function startGame() {
@@ -131,10 +132,13 @@ function startGame() {
     const rockListener = document.querySelector('.rock');
     rockListener.addEventListener('click', (e) => {
         score = updateScore(playRound(e.srcElement.alt), score);
-        console.log(score[0]);
+        console.log(score);
         updateScoreboard(score);
         if (score[0] + score[1] >= numberOfRounds) {
             displayWinner(score);
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
         }
 
     }
@@ -147,6 +151,10 @@ function startGame() {
         updateScoreboard(score);
         if (score[0] + score[1] >= numberOfRounds) {
             displayWinner(score);
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+
         }
 
     }
@@ -159,12 +167,25 @@ function startGame() {
         updateScoreboard(score);
         if (score[0] + score[1] >= numberOfRounds) {
             displayWinner(score);
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+
+
         }
 
     }
     );
 
+    return true;
 
 }
 
-document.querySelector('button').addEventListener('click', startGame);
+let hasGameStarted = false;
+
+if (!hasGameStarted) {
+    hasGameStarted = document.querySelector('button').addEventListener('click', startGame);
+}
+else {
+
+}
